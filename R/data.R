@@ -1,6 +1,6 @@
 
 
-
+#download data from OSF -----
 getData <- function() {
   
   
@@ -16,6 +16,20 @@ getData <- function() {
                   overwrite=TRUE,
                   unzip=TRUE,
                   removezips=FALSE)
+  
+  
+}
+
+
+#participants ----- 
+
+groupParticipants <- function(group) {
+  
+  demo <- read.csv('data/demographics.csv', stringsAsFactors = F)
+  
+  participants <- demo$participant[which(demo$group == group)]
+  
+  return(participants)
   
   
 }
