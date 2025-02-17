@@ -31,11 +31,54 @@ getGroupTraining <- function(group) {
 
 getBaseline <- function(df) {
   df <- df[which(df$trial_num %in% c(31:45)),]
-  str(df)
+  #str(df)
   
-  #rialnos <-
+  trialnos <- unique(df$trial_num)
   
+  for(trial in trialnos) {
+    
+    tdf <- df[which(df$trial_num == trial),]
+    
+    reachdev <- getReachDeviation(df)
+    print(reachdev)
+    
+    
+  }
   
+}
+
+getReachDeviation <- function(tdf) {
+  
+  target <- tdf$targetangle_deg[1]
+  
+  X <- df$handx_cm
+  Y <- df$handy_cm
+  
+  # at 1/4 the target distance
+  #target distance was 10 cm
+  #2.5 cm
+  
+  distances <- sqrt(X^2 + Y^2)
+  idx <- which(distances > 2.5)[1]
+  
+  #print(idx)
+  x <- X[idx]
+  y <- Y[idx]
+  
+  th <- (-1*target/180) * pi
+  R <- t(matrix(data=c(cos(th),sin(th), -sin(th), cos(th)), nrow=2, ncol=2))
+  
+          norm_sample <- matrix(data=c(x,y),ncol=2) %*% R
+  
+  #print(norm_sample)
+  
+  reachdev <- (atan2(norm_sample[2],norm_sample[1]) / pi) * 180
+  
+  print(reachdev)
+  
+  return(c('trial_num' = df$trial_num[1],
+           'targetangle_deg'=target, 
+           'reachdeviation_deg'=reachdev))
   
   
 }
