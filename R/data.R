@@ -21,6 +21,8 @@ getData <- function() {
 }
 
 
+df <- read.csv('data/cursorjump/3dd0c9//3dd0c9_aligned_training.csv', stringsAsFactors = F)
+
 #participants ----- 
 
 groupParticipants <- function(group) {
