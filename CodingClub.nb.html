@@ -1754,6 +1754,17 @@ display: none;
 <!-- rnb-text-begin -->
 <div id="overview" class="section level1">
 <h1>Overview</h1>
+<p>When people make reaches they use many signals to determine where
+their hand is. This includes efferent-based predictions of hand
+localization as well as afferent proprioceptive signals. Based on
+context people will rely more on predictions, and efferent signals to
+determine where their hand is. Here we trained people in the same
+pertubation with different types of information about the rotation. We
+test their explicit strategies to gauge if these contexts had effect on
+learning and then compare active and passive hand localization which
+respectively do or do not include efferent information. We expect groups
+with more explicit adaptation to rely on preictions more in their hand
+localization.</p>
 <p>In this experiment, participants adapted to a 30 degree rotation with
 various kinds of feedback:</p>
 <ol style="list-style-type: decimal">
@@ -1764,6 +1775,7 @@ each training trial: “cursorjump”</li>
 “handview”</li>
 <li>A group that was explained the rotation before: “instructed”</li>
 </ol>
+<p>All reaches were to targets at 45, 90, and 135 degrees.</p>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
@@ -1774,10 +1786,76 @@ each training trial: “cursorjump”</li>
 <li>Passive localization</li>
 <li>Active localization</li>
 </ol>
+<p>Both collected in the aligned and rotated phase of the task.</p>
+<p>#Setup</p>
+<p>get necessary packages:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHViR2xpY21GeWVTZ25jbVZ0YjNSbGN5Y3BYRzVwY0NBOExTQnBibk4wWVd4c1pXUXVjR0ZqYTJGblpYTW9LVnh1YVdZZ0tDZFNaV0ZqYUNjZ0pXbHVKU0JwY0Zzc0oxQmhZMnRoWjJVblhTa2dlMXh1SUNCcFppQW9hWEJiZDJocFkyZ29hWEJiTENkUVlXTnJZV2RsSjEwZ1BUMGdKMUpsWVdOb0p5a3NKMVpsY25OcGIyNG5YU0E4SUZ3aU1qQXlNeTR4TWk0eE4xd2lLU0I3WEc0Z0lDQWdjbVZ0YjNSbGN6bzZhVzV6ZEdGc2JGOW5hWFJvZFdJb0ozUm9ZWEowWW0wdlVtVmhZMmduS1Z4dUlDQjlYRzU5SUdWc2MyVWdlMXh1SUNCeVpXMXZkR1Z6T2pwcGJuTjBZV3hzWDJkcGRHaDFZaWduZEdoaGNuUmliUzlTWldGamFDY3BYRzU5WEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5saWJyYXJ5KCdyZW1vdGVzJylcbmlwIDwtIGluc3RhbGxlZC5wYWNrYWdlcygpXG5pZiAoJ1JlYWNoJyAlaW4lIGlwWywnUGFja2FnZSddKSB7XG4gIGlmIChpcFt3aGljaChpcFssJ1BhY2thZ2UnXSA9PSAnUmVhY2gnKSwnVmVyc2lvbiddIDwgXCIyMDIzLjEyLjE3XCIpIHtcbiAgICByZW1vdGVzOjppbnN0YWxsX2dpdGh1YigndGhhcnRibS9SZWFjaCcpXG4gIH1cbn0gZWxzZSB7XG4gIHJlbW90ZXM6Omluc3RhbGxfZ2l0aHViKCd0aGFydGJtL1JlYWNoJylcbn1cbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSgncmVtb3RlcycpXG5pcCA8LSBpbnN0YWxsZWQucGFja2FnZXMoKVxuaWYgKCdSZWFjaCcgJWluJSBpcFssJ1BhY2thZ2UnXSkge1xuICBpZiAoaXBbd2hpY2goaXBbLCdQYWNrYWdlJ10gPT0gJ1JlYWNoJyksJ1ZlcnNpb24nXSA8IFwiMjAyMy4xMi4xN1wiKSB7XG4gICAgcmVtb3Rlczo6aW5zdGFsbF9naXRodWIoJ3RoYXJ0Ym0vUmVhY2gnKVxuICB9XG59IGVsc2Uge1xuICByZW1vdGVzOjppbnN0YWxsX2dpdGh1YigndGhhcnRibS9SZWFjaCcpXG59XG5gYGAifQ== -->
+<pre class="r"><code>library(&#39;remotes&#39;)
+ip &lt;- installed.packages()
+if (&#39;Reach&#39; %in% ip[,&#39;Package&#39;]) {
+  if (ip[which(ip[,&#39;Package&#39;] == &#39;Reach&#39;),&#39;Version&#39;] &lt; &quot;2023.12.17&quot;) {
+    remotes::install_github(&#39;thartbm/Reach&#39;)
+  }
+} else {
+  remotes::install_github(&#39;thartbm/Reach&#39;)
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Syn the R environment?</p>
+<p>Source project code:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVJeUJrYjNkdWJHOWhaQ0JoYm1RZ2FHRnVaR3hsSUdSaGRHRTZYRzV6YjNWeVkyVW9KMUl2WkdGMFlTNVNKeWxjYmlNZ2MyTnlhWEIwY3lCbWIzSWdkSEpoYVc1cGJtY2djbVZoWTJobGN6cGNibk52ZFhKalpTZ25VaTl5WldGamFHVnpMbEluS1Z4dVlHQmdJbjA9IC0tPlxuXG5gYGByXG4jIGRvd25sb2FkIGFuZCBoYW5kbGUgZGF0YTpcbnNvdXJjZSgnUi9kYXRhLlInKVxuIyBzY3JpcHRzIGZvciB0cmFpbmluZyByZWFjaGVzOlxuc291cmNlKCdSL3JlYWNoZXMuUicpXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBkb3dubG9hZCBhbmQgaGFuZGxlIGRhdGE6XG5zb3VyY2UoJ1IvZGF0YS5SJylcbiMgc2NyaXB0cyBmb3IgdHJhaW5pbmcgcmVhY2hlczpcbnNvdXJjZSgnUi9yZWFjaGVzLlInKVxuYGBgIn0= -->
+<pre class="r"><code># download and handle data:
+source(&#39;R/data.R&#39;)
+# scripts for training reaches:
+source(&#39;R/reaches.R&#39;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="analysis-plan" class="section level2">
+<h2>Analysis plan</h2>
+<div id="training" class="section level3">
+<h3>Training</h3>
+<p>Did participants learn? Maybe we exclude some.</p>
+<p>Did all groups learn to the same extent?</p>
+<p>Did all groups learn equally quickly?</p>
+</div>
+<div id="no-cursors" class="section level3">
+<h3>No-cursors</h3>
+<p>There were two types of open-loop reaches. With or without
+strategy.</p>
+<p>In groups with a difference between these two, there is definitely a
+strategy.</p>
+<p>Perhaps the difference between with and without staretgy no-cusor
+reaches can be used as a measure of strategy.</p>
+</div>
+<div id="hand-localization" class="section level3">
+<h3>Hand localization</h3>
+<p>Is there a difference between active and passive localization?</p>
+<p>Is this different in the different conditions?</p>
+</div>
+</div>
+</div>
+<div id="reach-training" class="section level1">
+<h1>Reach Training</h1>
+<ol style="list-style-type: decimal">
+<li>Calculate baseline (trials 31 - 45: 5 reaches per target)</li>
+<li>Correct rotated reaches for baseline deviation</li>
+<li>Plot a learning curve</li>
+</ol>
+<p>(4. fit an exponetial to the learning curve)</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNNQ0wgQ29kaW5nIENsdWIiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIE92ZXJ2aWV3DQoNCkluIHRoaXMgZXhwZXJpbWVudCwgcGFydGljaXBhbnRzIGFkYXB0ZWQgdG8gYSAzMCBkZWdyZWUgcm90YXRpb24gd2l0aCB2YXJpb3VzIGtpbmRzIG9mIGZlZWRiYWNrOg0KDQoxLiBSZWd1bGFyIGN1cnNvciBmZWVkYmFjazogImNvbnRyb2wiDQoyLiBDdXJzb3JqdW1wIGZlZWRiYWNrLCB3aGVyZSB0aGUgY3Vyc29yIGlzIHNob3duIGF0IDEvM3JkIHRoZSByZWFjaCBvbiBlYWNoIHRyYWluaW5nIHRyaWFsOiAiY3Vyc29yanVtcCINCjMuIEEgZ3JvdXAgd2hlcmUgYm90aCB0aGUgY3Vyc29yIGFuZCBoYW5kIHdlcmUgdmlzaWJsZSBkdXJpbmcgdHJhaW5pbmc6ICJoYW5kdmlldyINCjQuIEEgZ3JvdXAgdGhhdCB3YXMgZXhwbGFpbmVkIHRoZSByb3RhdGlvbiBiZWZvcmU6ICJpbnN0cnVjdGVkIg0KDQojIERhdGENCg0KVGhlcmUgYXJlIHNldmVyYWwga2luZHMgb2YgZGF0YSB3ZSBjb3VsZCBhbmFseXplDQoNCjEuIFRyYWluaW5nIHJlYWNoZXMNCjIuIE5vIGN1cnNvciByZWFjaGVzDQozLiBQYXNzaXZlIGxvY2FsaXphdGlvbg0KNC4gQWN0aXZlIGxvY2FsaXphdGlvbg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNNQ0wgQ29kaW5nIENsdWIiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIE92ZXJ2aWV3DQoNCldoZW4gcGVvcGxlIG1ha2UgcmVhY2hlcyB0aGV5IHVzZSBtYW55IHNpZ25hbHMgdG8gZGV0ZXJtaW5lIHdoZXJlIHRoZWlyIGhhbmQgaXMuIFRoaXMgaW5jbHVkZXMgZWZmZXJlbnQtYmFzZWQgcHJlZGljdGlvbnMgb2YgaGFuZCBsb2NhbGl6YXRpb24gYXMgd2VsbCBhcyBhZmZlcmVudCBwcm9wcmlvY2VwdGl2ZSBzaWduYWxzLiBCYXNlZCBvbiBjb250ZXh0IHBlb3BsZSB3aWxsIHJlbHkgbW9yZSBvbiBwcmVkaWN0aW9ucywgYW5kIGVmZmVyZW50IHNpZ25hbHMgdG8gZGV0ZXJtaW5lIHdoZXJlIHRoZWlyIGhhbmQgaXMuIEhlcmUgd2UgdHJhaW5lZCBwZW9wbGUgaW4gdGhlIHNhbWUgcGVydHViYXRpb24gd2l0aCBkaWZmZXJlbnQgdHlwZXMgb2YgaW5mb3JtYXRpb24gYWJvdXQgdGhlIHJvdGF0aW9uLiBXZSB0ZXN0IHRoZWlyIGV4cGxpY2l0IHN0cmF0ZWdpZXMgdG8gZ2F1Z2UgaWYgdGhlc2UgY29udGV4dHMgaGFkIGVmZmVjdCBvbiBsZWFybmluZyBhbmQgdGhlbiBjb21wYXJlIGFjdGl2ZSBhbmQgcGFzc2l2ZSBoYW5kIGxvY2FsaXphdGlvbiB3aGljaCByZXNwZWN0aXZlbHkgZG8gb3IgZG8gbm90IGluY2x1ZGUgZWZmZXJlbnQgaW5mb3JtYXRpb24uIFdlIGV4cGVjdCBncm91cHMgd2l0aCBtb3JlIGV4cGxpY2l0IGFkYXB0YXRpb24gdG8gcmVseSBvbiBwcmVpY3Rpb25zIG1vcmUgaW4gdGhlaXIgaGFuZCBsb2NhbGl6YXRpb24uDQoNCkluIHRoaXMgZXhwZXJpbWVudCwgcGFydGljaXBhbnRzIGFkYXB0ZWQgdG8gYSAzMCBkZWdyZWUgcm90YXRpb24gd2l0aCB2YXJpb3VzIGtpbmRzIG9mIGZlZWRiYWNrOg0KDQoxLiBSZWd1bGFyIGN1cnNvciBmZWVkYmFjazogImNvbnRyb2wiDQoyLiBDdXJzb3JqdW1wIGZlZWRiYWNrLCB3aGVyZSB0aGUgY3Vyc29yIGlzIHNob3duIGF0IDEvM3JkIHRoZSByZWFjaCBvbiBlYWNoIHRyYWluaW5nIHRyaWFsOiAiY3Vyc29yanVtcCINCjMuIEEgZ3JvdXAgd2hlcmUgYm90aCB0aGUgY3Vyc29yIGFuZCBoYW5kIHdlcmUgdmlzaWJsZSBkdXJpbmcgdHJhaW5pbmc6ICJoYW5kdmlldyINCjQuIEEgZ3JvdXAgdGhhdCB3YXMgZXhwbGFpbmVkIHRoZSByb3RhdGlvbiBiZWZvcmU6ICJpbnN0cnVjdGVkIg0KDQpBbGwgcmVhY2hlcyB3ZXJlIHRvIHRhcmdldHMgYXQgNDUsIDkwLCBhbmQgMTM1IGRlZ3JlZXMuDQoNCiMgRGF0YQ0KDQpUaGVyZSBhcmUgc2V2ZXJhbCBraW5kcyBvZiBkYXRhIHdlIGNvdWxkIGFuYWx5emUNCg0KMS4gVHJhaW5pbmcgcmVhY2hlcw0KMi4gTm8gY3Vyc29yIHJlYWNoZXMNCjMuIFBhc3NpdmUgbG9jYWxpemF0aW9uDQo0LiBBY3RpdmUgbG9jYWxpemF0aW9uDQoNCkJvdGggY29sbGVjdGVkIGluIHRoZSBhbGlnbmVkIGFuZCByb3RhdGVkIHBoYXNlIG9mIHRoZSB0YXNrLg0KDQojU2V0dXANCg0KZ2V0IG5lY2Vzc2FyeSBwYWNrYWdlczoNCmBgYHtyfQ0KbGlicmFyeSgncmVtb3RlcycpDQppcCA8LSBpbnN0YWxsZWQucGFja2FnZXMoKQ0KaWYgKCdSZWFjaCcgJWluJSBpcFssJ1BhY2thZ2UnXSkgew0KICBpZiAoaXBbd2hpY2goaXBbLCdQYWNrYWdlJ10gPT0gJ1JlYWNoJyksJ1ZlcnNpb24nXSA8ICIyMDIzLjEyLjE3Iikgew0KICAgIHJlbW90ZXM6Omluc3RhbGxfZ2l0aHViKCd0aGFydGJtL1JlYWNoJykNCiAgfQ0KfSBlbHNlIHsNCiAgcmVtb3Rlczo6aW5zdGFsbF9naXRodWIoJ3RoYXJ0Ym0vUmVhY2gnKQ0KfQ0KYGBgDQoNClN5biB0aGUgUiBlbnZpcm9ubWVudD8NCg0KU291cmNlIHByb2plY3QgY29kZToNCg0KYGBge3J9DQojIGRvd25sb2FkIGFuZCBoYW5kbGUgZGF0YToNCnNvdXJjZSgnUi9kYXRhLlInKQ0KIyBzY3JpcHRzIGZvciB0cmFpbmluZyByZWFjaGVzOg0Kc291cmNlKCdSL3JlYWNoZXMuUicpDQpgYGANCg0KDQojIyBBbmFseXNpcyBwbGFuDQoNCiMjIyBUcmFpbmluZw0KDQpEaWQgcGFydGljaXBhbnRzIGxlYXJuPyBNYXliZSB3ZSBleGNsdWRlIHNvbWUuIA0KDQpEaWQgYWxsIGdyb3VwcyBsZWFybiB0byB0aGUgc2FtZSBleHRlbnQ/DQoNCkRpZCBhbGwgZ3JvdXBzIGxlYXJuIGVxdWFsbHkgcXVpY2tseT8NCg0KIyMjIE5vLWN1cnNvcnMNCg0KVGhlcmUgd2VyZSB0d28gdHlwZXMgb2Ygb3Blbi1sb29wIHJlYWNoZXMuIFdpdGggb3Igd2l0aG91dCBzdHJhdGVneS4gDQoNCkluIGdyb3VwcyB3aXRoIGEgZGlmZmVyZW5jZSBiZXR3ZWVuIHRoZXNlIHR3bywgdGhlcmUgaXMgZGVmaW5pdGVseSBhIHN0cmF0ZWd5LiANCg0KUGVyaGFwcyB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHdpdGggYW5kIHdpdGhvdXQgc3RhcmV0Z3kgbm8tY3Vzb3IgcmVhY2hlcyBjYW4gYmUgdXNlZCBhcyBhIG1lYXN1cmUgb2Ygc3RyYXRlZ3kuDQoNCg0KIyMjIEhhbmQgbG9jYWxpemF0aW9uIA0KDQpJcyB0aGVyZSBhIGRpZmZlcmVuY2UgYmV0d2VlbiBhY3RpdmUgYW5kIHBhc3NpdmUgbG9jYWxpemF0aW9uPyANCg0KSXMgdGhpcyBkaWZmZXJlbnQgaW4gdGhlIGRpZmZlcmVudCBjb25kaXRpb25zPw0KDQojIFJlYWNoIFRyYWluaW5nDQoNCjEuIENhbGN1bGF0ZSBiYXNlbGluZSAodHJpYWxzIDMxIC0gNDU6IDUgcmVhY2hlcyBwZXIgdGFyZ2V0KQ0KMi4gQ29ycmVjdCByb3RhdGVkIHJlYWNoZXMgZm9yIGJhc2VsaW5lIGRldmlhdGlvbg0KMy4gUGxvdCBhIGxlYXJuaW5nIGN1cnZlDQoNCig0LiBmaXQgYW4gZXhwb25ldGlhbCB0byB0aGUgbGVhcm5pbmcgY3VydmUpDQoNCg==</div>
 
 
 
