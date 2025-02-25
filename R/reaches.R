@@ -18,16 +18,42 @@ getGroupTraining <- function(group) {
   participants <- groupParticipants(group = group)
   #print(participants)
   
-  for (participant in participants[1]) {
+  all_baselines <- NA
+  
+  for (participant in participants) {
     
     participant_df <- getParticipantTraining(group = group, participant = participant)
   
     
     baseline <- getBaseline(df = participant_df[['aligned']])
+    
+    baseline$reachdeviation_deg[which(abs(baseline$reachdeviation_deg) >= 50)] <- NA
+    
+    baseline <- aggregate(reachdeviation_deg ~ targetangle_deg, data=baseline, FUN=median, na.rm=TRUE)
+    
+    baseline$participant <- participant
+    
+   if (is.data.frame(all_baselines)) {
+     all_baselines <- rbind(all_baselines, baseline)
+   } else {
+     
+     all_baselines <- baseline
+   }
+  
+  
+ 
+    #removeOutliers(baseline, rotation=0)
+    
+    #rotated <- getRotatedLearning(df = participant_df[['rotated]])
+    
+    #removeOutliers(rotated, rotation=30)
+    
+    
   }
   
+plot(x=all_baselines$targetangle_deg,
+     y=all_baselines$reachdeviation_deg)
 }
-
 
 getBaseline <- function(df) {
   df <- df[which(df$trial_num %in% c(31:45)),]
@@ -55,12 +81,11 @@ getBaseline <- function(df) {
   }
   
 return(outdf)
-  
 }
 
-getReachDeviation <- function(tdf) {
+getReachDeviation <- function(df) {
   
-  target <- tdf$targetangle_deg[1]
+  target <- df$targetangle_deg[1]
   
   X <- df$handx_cm
   Y <- df$handy_cm
@@ -90,9 +115,5 @@ getReachDeviation <- function(tdf) {
   return(c('trial_num' = df$trial_num[1],
            'targetangle_deg'=target, 
            'reachdeviation_deg'=reachdev))
-  
-  
 }
-
-
-
+  
