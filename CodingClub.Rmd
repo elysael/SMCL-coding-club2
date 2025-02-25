@@ -82,6 +82,10 @@ Is this different in the different conditions?
 # Reach Training
 
 1. Calculate baseline (trials 31 - 45: 5 reaches per target)
+
+## remove outliers
+
+## use more trials to estimate baseline bias 
 2. Correct rotated reaches for baseline deviation
 3. Plot a learning curve
 
