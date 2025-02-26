@@ -11,17 +11,16 @@ getData <- function() {
                                            'handview_rotated.zip',
                                            'cursorjump_aligned.zip',
                                            'cursorjump_rotated.zip',
-                                           'demographics.csv')),
+                                           'demographics.csv',
+                                           'schedule.csv')),
                   folder = 'data/',
                   overwrite=TRUE,
                   unzip=TRUE,
-                  removezips=FALSE)
+                  removezips=TRUE)
   
   
 }
 
-
-df <- read.csv('data/cursorjump/3dd0c9//3dd0c9_aligned_training.csv', stringsAsFactors = F)
 
 #participants ----- 
 
